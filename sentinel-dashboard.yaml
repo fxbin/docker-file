@@ -2,7 +2,6 @@ version: "2"
 services:
   sentinel-dashboard:
     container_name: sentinel-dashboard
-    image: bladex/sentinel-dashboard:1.7.2
+    image: fxbin/sentinel-dashboard:latest
     ports:
       - "8858:8858"
-    restart: always
