@@ -13,7 +13,6 @@ services:
       - "9555:9555"
     depends_on:
       - mysql
-    restart: always
   mysql:
     image: nacos/nacos-mysql:8.0.16
     container_name: mysql
