@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  skywalking-oap:
+    container_name: skywalking-oap
+    image: apache/skywalking-oap-server:8.7.0-es7
+    ports:
+      - "11800:11800"
+      - "12800:12800"
+
+  skywalking-ui:
+    container_name: skywalking-ui
+    image: apache/skywalking-ui:8.7.0
+    ports:
+      - "8088:8080"
+    environment:
+      SW_OAP_ADDRESS: http://skywalking-oap:12800
+      SW_TIMEOUT: 20000
+    links:
+      - skywalking-oap
+    depends_on:
+      - skywalking-oap
