@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  pgsql:
+    container_name: pgsql
+    image: postgres:12.10
+    privileged: true
+    # 权限要加，不然启动会告错
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER:  postgres
+      POSTGRES_DB: postgres
+      TZ: Asia/Shanghai
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgsql/data:/var/lib/postgresql/data
+    restart: always
