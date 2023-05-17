@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9901" --address ":9900"
+    ports:
+    - "9900:9900"
+    - "9901:9901"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9900/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+
+
