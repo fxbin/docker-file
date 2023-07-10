@@ -10,4 +10,4 @@ services:
       - '6379:6379'
     command: redis-server --requirepass bin --appendonly yes
     volumes:
-      - ./redis/data:/data
+      - ./data/redis:/data
