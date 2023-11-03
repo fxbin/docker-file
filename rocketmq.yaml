@@ -1,0 +1,41 @@
+version: '3.8'
+ 
+services:
+  rmqnamesrv:
+    image: apache/rocketmq:latest
+    container_name: rmqnamesrv
+    ports:
+      - 9876:9876
+    volumes:
+      - ./data/rocketmq/logs:/home/rocketmq/logs
+    environment:
+      JAVA_OPT_EXT: "-Duser.home=/home/rocketmq -Xms256M -Xmx256M -Xmn128m"
+    command: ["sh","mqnamesrv"]
+ 
+  broker:
+    image: apache/rocketmq:latest
+    container_name: rmqbroker
+    ports:
+      - 10909:10909
+      - 10911:10911
+    volumes:
+      - ./data/rocketmq/logs:/root/logs
+      - ./data/rocketmq/store:/root/store
+      - ./data/rocketmq/broker.conf:/home/rocketmq/broker.conf
+    links:
+      - rmqnamesrv:namesrv
+    #restart: always
+    depends_on:
+      - 'rmqnamesrv'
+    environment:
+      NAMESRV_ADDR: 192.168.26.153:9876
+      JAVA_OPT_EXT: "-Duser.home=/home/rocketmq -Xms256M -Xmx256M -Xmn128m"
+    command: ["sh","mqbroker","-c","/home/rocketmq/broker.conf","autoCreateTopicEnable=true"]
+ 
+  rmqdashboard:
+    image: apacherocketmq/rocketmq-dashboard:latest
+    container_name: rocketmq-dashboard
+    ports:
+      - 8082:8080
+    environment:
+        JAVA_OPTS: "-Drocketmq.namesrv.addr=192.168.26.153:9876"
